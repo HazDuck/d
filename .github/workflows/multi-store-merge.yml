@@ -16,6 +16,6 @@ jobs:
         uses: jamiemccleave/shopify-multi-store-deployer@v2.0
         with:
           from_branch: "main"
-          to_branch: "liv/tev-dev"
+          to_branch: "live/tev-dev"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
