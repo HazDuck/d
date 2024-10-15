@@ -1,21 +1,110 @@
-name: "Multi Store Merge"
+name: Merge to store themes
 
 on:
-  push:
+ push:
+   branches:
+     - main
+   paths-ignore:
+     - 'templates/*.json'
+     - 'config/*.json'
+     - 'locales/*.json'
+ pull_request:
+   branches:
+     - main
+   paths-ignore:
+     - 'templates/*.json'
+     - 'config/*.json'
+     - 'locales/*.json'
 
 jobs:
-  merge:
+  build:
     runs-on: ubuntu-latest
 
-
     steps:
-      - name: Checkout
+      - name: checkout
         uses: actions/checkout@v2
-
-      - name: Shopify Multi Store Deployer
-        uses: jamiemccleave/shopify-multi-store-deployer@v2.0
+      - name: merge
+        uses: mtanzi/action-automerge@v1
+        id: merge-EU
         with:
-          from_branch: "main"
-          to_branch: "live/tev-dev"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ github.token }}
+          source: 'main'
+          target: 'live/liqlon-dev'
+      - name: merge
+        uses: mtanzi/action-automerge@v1
+        id: merge-AUS
+        with:
+          github_token: ${{ github.token }}
+          source: 'main'
+          target: 'live/tev-dev'
+
+# name: "Multi Store Merge"
+
+# on:
+#   push:
+
+# jobs:
+#   merge:
+#     runs-on: ubuntu-latest
+
+
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v2
+
+#       - name: Shopify Multi Store Deployer
+#         uses: jamiemccleave/shopify-multi-store-deployer@v2.0
+#         with:
+#           from_branch: "main"
+#           to_branch: "live/tev-dev"
+#         env:
+#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+
+
+# name: Merge to store themes
+ 
+# on:
+#  push:
+#    branches:
+#      - main
+#    paths-ignore:
+#      - 'templates/*.json'
+#      - 'config/*.json'
+#      - 'locales/*.json'
+#  pull_request:
+#    branches:
+#      - main
+#    paths-ignore:
+#      - 'templates/*.json'
+#      - 'config/*.json'
+#      - 'locales/*.json'
+ 
+# jobs:
+#  build:
+#    runs-on: ubuntu-latest
+
+#  steps:
+#      - name: checkout
+#        uses: actions/checkout@v2
+#      - name: merge
+#        uses: mtanzi/action-automerge@v1
+#        id: merge-UK
+#        with:
+#          github_token: ${{ github.token }}
+#          source: 'main'
+#          target: 'live/UK'
+#      - name: merge
+#        uses: mtanzi/action-automerge@v1
+#        id: merge-EU
+#        with:
+#          github_token: ${{ github.token }}
+#          source: 'main'
+#          target: 'live/EU'
+#      - name: merge
+#        uses: mtanzi/action-automerge@v1
+#        id: merge-AUS
+#        with:
+#          github_token: ${{ github.token }}
+#          source: 'main'
+#          target: 'live/AUS'
